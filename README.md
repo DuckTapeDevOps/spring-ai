@@ -6,6 +6,13 @@ The Spring AI project provides a Spring-friendly API and abstractions for develo
 
 Let's make your `@Beans` intelligent!
 
+## Project Links
+
+* [Documentation](https://docs.spring.io/spring-ai/reference/)
+* [Issues](https://github.com/spring-projects/spring-ai/issues)
+* [Discussions](https://github.com/spring-projects/spring-ai/discussions) - Go here if you have a question, suggestion, or feedback!
+* [JavaDocs](https://docs.spring.io/spring-ai/docs/current-SNAPSHOT/)
+
 ## Overview
 
 Despite the extensive history of AI, Java's role in this domain has been relatively minor.
@@ -109,69 +116,13 @@ Though the `DocumentWriter` interface isn't exclusively for Vector Database writ
 They ascertain which document sections the AI should use for generating responses.
 Examples of Vector Databases include Chroma, Postgres, Pinecone, Weaviate, Mongo Atlas, and Redis. Spring AI's `VectorStore` abstraction permits effortless transitions between database implementations.
 
+## Educational Resources
 
-## Project Update
-
-:partying_face: The Spring AI project has graduated out of the repository!
-
-:warning:
-
-### Breaking Changes
-
-January 13, 2024 Update
-
-The following OpenAi Autoconfiguration chat properties has changed
-
- - from `spring.ai.openai.model` to `spring.ai.openai.chat.model`.
- - from `spring.ai.openai.temperature` to `spring.ai.openai.chat.temperature`.
-
-Find updated documentation about the OpenAi properties: https://docs.spring.io/spring-ai/reference/api/clients/openai.html
-
-December 27, 2023 Update
-
-Merge SimplePersistentVectorStore and InMemoryVectorStore into SimpleVectorStore
-- Replace InMemoryVectorStore with SimpleVectorStore
-
-December 20, 2023 Update
-
-Refactor the Ollama client and related classes and package names
-
- - Replace the org.springframework.ai.ollama.client.OllamaClient by org.springframework.ai.ollama.OllamaChatClient.
- - The OllamaChatClient method signatures have changed.
- - Rename the org.springframework.ai.autoconfigure.ollama.OllamaProperties into org.springframework.ai.autoconfigure.ollama.OllamaChatProperties and change the suffix to: `spring.ai.ollama.chat`. Some of the properties have changed as well.
-
-December 19, 2023 Update
-
-Renaming of AiClient and related classes and packagenames
-
-* Rename AiClient to ChatClient
-* Rename AiResponse to ChatResponse
-* Rename AiStreamClient to StreamingChatClient
-* Rename package org.sf.ai.client to org.sf.ai.chat
-
-Rename artifact ID of
-
-* `transformers-embedding` to `spring-ai-transformers`
-
-Moved Maven modules from top level directoryand `embedding-clients` subdirectory to all be under a single `models` directory.
-
-:warning:
-
-December 1, 2023
-
-We are transitioning the project's Group ID:
-
-* **FROM**: `org.springframework.experimental.ai`
-* **TO**: `org.springframework.ai`
-
-Artifacts will still be hosted in the snapshot repository as shown below.
-
-The main branch will move to the version `0.8.0-SNAPSHOT`.
-It will be unstable for a week or two.
-Please use the 0.7.1-SNAPSHOT if you don't want to be on the bleeding edge.
-
-You can access `0.7.1-SNAPSHOT` artifacts as before and still access [0.7.1-SNAPSHOT Documentation](https://markpollack.github.io/spring-ai-0.7.1/).
-
+* Follow the [Workshop](#workshop)
+* Overview of Spring AI @ Devoxx 2023
+<br>[![Watch the Devoxx 2023 video](https://img.youtube.com/vi/7OY9fKVxAFQ/default.jpg)](https://www.youtube.com/watch?v=7OY9fKVxAFQ)
+* Introducing Spring AI - Add Generative AI to your Spring Applications
+<br>[![Watch the video](https://img.youtube.com/vi/1g_wuincUdU/default.jpg)](https://www.youtube.com/watch?v=1g_wuincUdU)
 
 ## Cloning the repo
 
@@ -181,20 +132,32 @@ To clone it you have to either:
 - Ignore the large files (won't affect the spring-ai behaviour) :  `GIT_LFS_SKIP_SMUDGE=1 git clone git@github.com:spring-projects/spring-ai.git`.
 - Or install the [Git Large File Storage](https://git-lfs.com/) before cloning the repo.
 
-## Project Links
+## Building
 
-* [Documentation](https://docs.spring.io/spring-ai/reference/)
-* [Issues](https://github.com/spring-projects/spring-ai/issues)
-* [Discussions](https://github.com/spring-projects/spring-ai/discussions) - Go here if you have a question, suggestion, or feedback!
-* [JavaDocs](https://docs.spring.io/spring-ai/docs/current-SNAPSHOT/)
+To build with running unit tests
 
-## Educational Resources
+```shell
+./mvnw clean package
+```
 
-* Follow the [Workshop](#workshop)
-* Overview of Spring AI @ Devoxx 2023
-<br>[![Watch the Devoxx 2023 video](https://img.youtube.com/vi/7OY9fKVxAFQ/default.jpg)](https://www.youtube.com/watch?v=7OY9fKVxAFQ)
-* Introducing Spring AI - Add Generative AI to your Spring Applications
-<br>[![Watch the video](https://img.youtube.com/vi/1g_wuincUdU/default.jpg)](https://www.youtube.com/watch?v=1g_wuincUdU)
+To build including integration tests.
+Set API key environment variables for OpenAI and Azure OpenAI before running.
+
+```shell
+./mvnw clean verify -Pintegration-tests
+```
+
+To run a specific integration test allowing for up to two attempts to succeed.  This is useful when a hosted service is not reliable or times out.
+```shell
+./mvnw -pl vector-stores/spring-ai-pgvector-store -Pintegration-tests -Dfailsafe.rerunFailingTestsCount=2 -Dit.test=PgVectorStoreIT verify
+
+```
+To build the docs
+```shell
+./mvnw -pl spring-ai-docs antora
+```
+
+The docs are then in the directory `spring-ai-docs/target/antora/site/index.html`
 
 ## Dependencies
 
@@ -333,6 +296,68 @@ Following vector stores are supported:
     </dependency>
 ```
 
+## Project Update
+
+:partying_face: The Spring AI project has graduated out of the repository!
+
+:warning:
+
+### Breaking Changes
+
+January 13, 2024 Update
+
+The following OpenAi Autoconfiguration chat properties has changed
+
+ - from `spring.ai.openai.model` to `spring.ai.openai.chat.model`.
+ - from `spring.ai.openai.temperature` to `spring.ai.openai.chat.temperature`.
+
+Find updated documentation about the OpenAi properties: https://docs.spring.io/spring-ai/reference/api/clients/openai.html
+
+December 27, 2023 Update
+
+Merge SimplePersistentVectorStore and InMemoryVectorStore into SimpleVectorStore
+- Replace InMemoryVectorStore with SimpleVectorStore
+
+December 20, 2023 Update
+
+Refactor the Ollama client and related classes and package names
+
+ - Replace the org.springframework.ai.ollama.client.OllamaClient by org.springframework.ai.ollama.OllamaChatClient.
+ - The OllamaChatClient method signatures have changed.
+ - Rename the org.springframework.ai.autoconfigure.ollama.OllamaProperties into org.springframework.ai.autoconfigure.ollama.OllamaChatProperties and change the suffix to: `spring.ai.ollama.chat`. Some of the properties have changed as well.
+
+December 19, 2023 Update
+
+Renaming of AiClient and related classes and packagenames
+
+* Rename AiClient to ChatClient
+* Rename AiResponse to ChatResponse
+* Rename AiStreamClient to StreamingChatClient
+* Rename package org.sf.ai.client to org.sf.ai.chat
+
+Rename artifact ID of
+
+* `transformers-embedding` to `spring-ai-transformers`
+
+Moved Maven modules from top level directoryand `embedding-clients` subdirectory to all be under a single `models` directory.
+
+:warning:
+
+December 1, 2023
+
+We are transitioning the project's Group ID:
+
+* **FROM**: `org.springframework.experimental.ai`
+* **TO**: `org.springframework.ai`
+
+Artifacts will still be hosted in the snapshot repository as shown below.
+
+The main branch will move to the version `0.8.0-SNAPSHOT`.
+It will be unstable for a week or two.
+Please use the 0.7.1-SNAPSHOT if you don't want to be on the bleeding edge.
+
+You can access `0.7.1-SNAPSHOT` artifacts as before and still access [0.7.1-SNAPSHOT Documentation](https://markpollack.github.io/spring-ai-0.7.1/).
+
 ## Workshop
 
 * You can try out the features of Spring AI by following the [workshop material for Azure OpenAI](https://github.com/Azure-Samples/spring-ai-azure-workshop)
@@ -345,29 +370,3 @@ Following vector stores are supported:
     </dependency>
 ```
 
-## Building
-
-To build with running unit tests
-
-```shell
-./mvnw clean package
-```
-
-To build including integration tests.
-Set API key environment variables for OpenAI and Azure OpenAI before running.
-
-```shell
-./mvnw clean verify -Pintegration-tests
-```
-
-To run a specific integration test allowing for up to two attempts to succeed.  This is useful when a hosted service is not reliable or times out.
-```shell
-./mvnw -pl vector-stores/spring-ai-pgvector-store -Pintegration-tests -Dfailsafe.rerunFailingTestsCount=2 -Dit.test=PgVectorStoreIT verify
-
-```
-To build the docs
-```shell
-./mvnw -pl spring-ai-docs antora
-```
-
-The docs are then in the directory `spring-ai-docs/target/antora/site/index.html`
